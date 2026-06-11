@@ -4,18 +4,9 @@
 ## Getting Started
 Aplikasi manajemen internal satu pintu untuk pengelolaan Customer, Produk, Transaksi, Piutang, dan Bonus berbasis **Cash Basis Accounting**. Dirancang khusus untuk kebutuhan bisnis "HL".
 
--First, run the development server:
+First, run the development server:
 ## Fitur Utama
 
-```bash
-npm run dev
--# or
-yarn dev
--# or
-pnpm dev
--# or
-bun dev
-```
 **Autentikasi Aman:** Sistem *Single-User* dengan password yang di-hash menggunakan `bcryptjs` dan sesi berbasis JWT.
 **Manajemen Customer & Produk:** Mendukung pemisahan tipe produk (LM/BR) dan diskon bertingkat (*cascading discount*).
 **Pencatatan Transaksi (Bon):**
