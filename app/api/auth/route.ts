@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma'; // ── Gunakan instance terpusat yang udah aman
+import { prisma } from '@/lib/prisma'; 
 import { SignJWT } from 'jose';
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto'; 
 
 // Ambil secret key dari env atau default untuk lokal development
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'hl-management-secret-super-key-2026');
@@ -15,13 +16,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, message: 'Username dan password wajib diisi!' }, { status: 400 });
     }
 
-    // 1. Cek apakah sudah ada akun terdaftar di database (AC-1.2 Single User)
+    // 2. Cek apakah sudah ada akun terdaftar di database (AC-1.2 Single User)
     let user = await prisma.user.findFirst();
 
     if (!user) {
-      // Jika database masih kosong melompong, user pertama yang daftar otomatis jadi pemilik akun tunggal
+      // 🚀 KUNCIAN UTAMA: Suntikkan id unik (UUID) agar Turso tidak meledak karena constraint PRIMARY KEY
       user = await prisma.user.create({
         data: {
+          id: crypto.randomUUID(), 
           username: String(username).toLowerCase(),
           password: await bcrypt.hash(String(password), 10),
         },
@@ -34,13 +36,13 @@ export async function POST(request: Request) {
       }
     }
 
-    // 2. Generate Token JWT kadaluarsa 1 hari
+    // 3. Generate Token JWT kadaluarsa 1 hari
     const token = await new SignJWT({ userId: user.id, username: user.username })
       .setProtectedHeader({ alg: 'HS256' })
       .setExpirationTime('1d')
       .sign(JWT_SECRET);
 
-    // 3. Set token ke cookies browser secara aman (httpOnly & secure)
+    // 4. Set token ke cookies browser secara aman (httpOnly & secure)
     const response = NextResponse.json({ success: true, message: 'Autentikasi berhasil!' });
     response.cookies.set('hl_token', token, {
       httpOnly: true,
@@ -54,7 +56,6 @@ export async function POST(request: Request) {
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : 'Internal Server Error';
     return NextResponse.json({ success: false, message: errorMsg }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
+  // BLOK finally { prisma.$disconnect() } DIHAPUS agar pool koneksi serverless tetap terjaga stabil!
 }
