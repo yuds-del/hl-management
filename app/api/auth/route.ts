@@ -1,15 +1,9 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { PrismaLibSql } from '@prisma/adapter-libsql';
+import { prisma } from '@/lib/prisma'; // ── Gunakan instance terpusat yang udah aman
 import { SignJWT } from 'jose';
 import bcrypt from 'bcryptjs';
 
-const adapter = new PrismaLibSql({
-  url: process.env.DATABASE_URL || 'file:./prisma/dev.db',
-});
-
-
-// Gunakan secret key dari env atau default untuk lokal development
+// Ambil secret key dari env atau default untuk lokal development
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'hl-management-secret-super-key-2026');
 
 export async function POST(request: Request) {
