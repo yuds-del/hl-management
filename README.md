@@ -25,7 +25,7 @@ Open http://localhost:3000 with your browser to see the result.
 **ORM & Database:** Prisma dengan SQLite/LibSQL (Serverless ready).
 **Security:** Jose (JWT), Bcryptjs.
 
-This project uses `next/font` to automatically optimize and load Geist, a new font family for Vercel.
+
 ##  Aturan Bisnis (Core Logic)
 
 ## Learn More
