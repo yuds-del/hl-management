@@ -1,13 +1,9 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
 
-// Inisialisasi resmi Prisma v7 menggunakan adapter / override url standar yang dibungkus aman
-const prisma = new PrismaClient({
-  log: ['query', 'info', 'warn', 'error'],
-});
 
-export async function GET() {
+export async function POST() {
   try {
     console.log('Membuat user admin HL via API...');
     
