@@ -5,6 +5,9 @@ import bcrypt from 'bcryptjs';
 import crypto from 'crypto'; 
 
 // Ambil secret key dari env atau default untuk lokal development
+export const runtime = 'nodejs';
+export const preferredRegion = ['sin1', 'hkg1']; 
+
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'hl-management-secret-super-key-2026');
 
 export async function POST(request: Request) {
