@@ -34,17 +34,13 @@ Open http://localhost:3000 with your browser to see the result.
 3. **Pass-through Shipping:** Ongkir ditagihkan ke customer namun tidak dihitung dalam Laba HL.
 4. **Bonus Eligibility:** Transaksi dengan flag `isBonus` tidak menambah omzet dan tidak mengurangi laba (biaya modal diabaikan).
 
-To learn more about Next.js, take a look at the following resources:
-##  Cara Penggunaan
 
-Next.js Documentation - learn about Next.js features and API.
-Learn Next.js - an interactive Next.js tutorial.
+##  Cara Penggunaan
 ### 1. Instalasi
 ```bash
 npm install
 ```
 
-You can check out the Next.js GitHub repository - your feedback and contributions are welcome!
  ### 2. Konfigurasi Environment
 Buat file `.env` di root direktori:
  ```env
@@ -57,14 +53,11 @@ JWT_SECRET="masukkan_secret_key_anda_di_sini"
 ```bash
 npx prisma db push
 ```
-
--The easiest way to deploy your Next.js app is to use the Vercel Platform from the creators of Next.js.
 ### 4. Menjalankan Aplikasi
 ```bash
 npm run dev
 ```
 Akses aplikasi di `http://localhost:3000`. Saat pertama kali dibuka, sistem akan meminta pembuatan akun admin pertama.
 
--Check out our Next.js deployment documentation for more details.
 ##  Lisensi
 Internal System for HL Management.
