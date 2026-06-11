@@ -28,7 +28,6 @@ Open http://localhost:3000 with your browser to see the result.
 
 ##  Aturan Bisnis (Core Logic)
 
-## Learn More
 1. **Cash Basis:** Omzet dan Laba hanya diakui dalam laporan jika status transaksi sudah `Lunas`.
 2. **Cascading Discount:** Diskon dihitung berurutan (contoh: 100 - 20% - 20% - 10%), bukan dijumlahkan.
 3. **Pass-through Shipping:** Ongkir ditagihkan ke customer namun tidak dihitung dalam Laba HL.
