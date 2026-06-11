@@ -1,81 +1,81 @@
 
-+# HL Sales & Receivables Management System
+# HL Sales & Receivables Management System
 
--## Getting Started
-+Aplikasi manajemen internal satu pintu untuk pengelolaan Customer, Produk, Transaksi, Piutang, dan Bonus berbasis **Cash Basis Accounting**. Dirancang khusus untuk kebutuhan bisnis "HL".
+## Getting Started
+Aplikasi manajemen internal satu pintu untuk pengelolaan Customer, Produk, Transaksi, Piutang, dan Bonus berbasis **Cash Basis Accounting**. Dirancang khusus untuk kebutuhan bisnis "HL".
 
 -First, run the development server:
-+## Fitur Utama
+## Fitur Utama
 
--```bash
--npm run dev
+```bash
+npm run dev
 -# or
--yarn dev
+yarn dev
 -# or
--pnpm dev
+pnpm dev
 -# or
--bun dev
--```
-+- **Autentikasi Aman:** Sistem *Single-User* dengan password yang di-hash menggunakan `bcryptjs` dan sesi berbasis JWT.
-+- **Manajemen Customer & Produk:** Mendukung pemisahan tipe produk (LM/BR) dan diskon bertingkat (*cascading discount*).
-+- **Pencatatan Transaksi (Bon):**
-+  - Nomor bon unik.
-+  - Perhitungan otomatis Omzet dan Laba Bersih.
-+  - Penanganan Ongkir sebagai *pass-through* (tidak menambah profit).
-+- **Buku Besar Mitra:** Detail transaksi per customer yang dikelompokkan berdasarkan bulan.
-+- **Pelunasan Cepat:** Fitur *Settle 1 Bulan Lunas* untuk merubah status piutang secara massal.
-+- **Sistem Bonus Otomatis:** Akumulasi omzet lunas untuk melacak ambang batas (*threshold*) bonus tiap customer.
-+- **Laporan Akuntansi:** Rekapitulasi keuntungan riil berbasis kas yang dapat dicetak langsung ke format PDF.
+bun dev
+```
+**Autentikasi Aman:** Sistem *Single-User* dengan password yang di-hash menggunakan `bcryptjs` dan sesi berbasis JWT.
+**Manajemen Customer & Produk:** Mendukung pemisahan tipe produk (LM/BR) dan diskon bertingkat (*cascading discount*).
+**Pencatatan Transaksi (Bon):**
+ - Nomor bon unik.
+ - Perhitungan otomatis Omzet dan Laba Bersih.
+ - Penanganan Ongkir sebagai *pass-through* (tidak menambah profit).
+**Buku Besar Mitra:** Detail transaksi per customer yang dikelompokkan berdasarkan bulan.
+**Pelunasan Cepat:** Fitur *Settle 1 Bulan Lunas* untuk merubah status piutang secara massal.
+**Sistem Bonus Otomatis:** Akumulasi omzet lunas untuk melacak ambang batas (*threshold*) bonus tiap customer.
+**Laporan Akuntansi:** Rekapitulasi keuntungan riil berbasis kas yang dapat dicetak langsung ke format PDF.
 
--Open http://localhost:3000 with your browser to see the result.
-+##  Stack Teknologi
+Open http://localhost:3000 with your browser to see the result.
+##  Stack Teknologi
 
--You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-+- **Frontend:** Next.js 15 (App Router), Tailwind CSS, Lucide React Icons.
-+- **Backend:** Next.js API Routes.
-+- **ORM & Database:** Prisma dengan SQLite/LibSQL (Serverless ready).
-+- **Security:** Jose (JWT), Bcryptjs.
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Frontend:** Next.js 15 (App Router), Tailwind CSS, Lucide React Icons.
+**Backend:** Next.js API Routes.
+**ORM & Database:** Prisma dengan SQLite/LibSQL (Serverless ready).
+**Security:** Jose (JWT), Bcryptjs.
 
--This project uses `next/font` to automatically optimize and load Geist, a new font family for Vercel.
-+##  Aturan Bisnis (Core Logic)
+This project uses `next/font` to automatically optimize and load Geist, a new font family for Vercel.
+##  Aturan Bisnis (Core Logic)
 
--## Learn More
-+1. **Cash Basis:** Omzet dan Laba hanya diakui dalam laporan jika status transaksi sudah `Lunas`.
-+2. **Cascading Discount:** Diskon dihitung berurutan (contoh: 100 - 20% - 20% - 10%), bukan dijumlahkan.
-+3. **Pass-through Shipping:** Ongkir ditagihkan ke customer namun tidak dihitung dalam Laba HL.
-+4. **Bonus Eligibility:** Transaksi dengan flag `isBonus` tidak menambah omzet dan tidak mengurangi laba (biaya modal diabaikan).
+## Learn More
+1. **Cash Basis:** Omzet dan Laba hanya diakui dalam laporan jika status transaksi sudah `Lunas`.
+2. **Cascading Discount:** Diskon dihitung berurutan (contoh: 100 - 20% - 20% - 10%), bukan dijumlahkan.
+3. **Pass-through Shipping:** Ongkir ditagihkan ke customer namun tidak dihitung dalam Laba HL.
+4. **Bonus Eligibility:** Transaksi dengan flag `isBonus` tidak menambah omzet dan tidak mengurangi laba (biaya modal diabaikan).
 
--To learn more about Next.js, take a look at the following resources:
-+##  Cara Penggunaan
+To learn more about Next.js, take a look at the following resources:
+##  Cara Penggunaan
 
--- Next.js Documentation - learn about Next.js features and API.
--- Learn Next.js - an interactive Next.js tutorial.
-+### 1. Instalasi
-+```bash
-+npm install
-+```
+Next.js Documentation - learn about Next.js features and API.
+Learn Next.js - an interactive Next.js tutorial.
+### 1. Instalasi
+```bash
+npm install
+```
 
--You can check out the Next.js GitHub repository - your feedback and contributions are welcome!
-+### 2. Konfigurasi Environment
-+Buat file `.env` di root direktori:
-+```env
-+DATABASE_URL="file:./prisma/dev.db"
-+JWT_SECRET="masukkan_secret_key_anda_di_sini"
-+```
+You can check out the Next.js GitHub repository - your feedback and contributions are welcome!
+ ### 2. Konfigurasi Environment
+Buat file `.env` di root direktori:
+ ```env
+DATABASE_URL="file:./prisma/dev.db"
+JWT_SECRET="masukkan_secret_key_anda_di_sini"
+```
 
--## Deploy on Vercel
-+### 3. Setup Database
-+```bash
-+npx prisma db push
-+```
+## Deploy on Vercel
+### 3. Setup Database
+```bash
+npx prisma db push
+```
 
 -The easiest way to deploy your Next.js app is to use the Vercel Platform from the creators of Next.js.
-+### 4. Menjalankan Aplikasi
-+```bash
-+npm run dev
-+```
-+Akses aplikasi di `http://localhost:3000`. Saat pertama kali dibuka, sistem akan meminta pembuatan akun admin pertama.
+### 4. Menjalankan Aplikasi
+```bash
+npm run dev
+```
+Akses aplikasi di `http://localhost:3000`. Saat pertama kali dibuka, sistem akan meminta pembuatan akun admin pertama.
 
 -Check out our Next.js deployment documentation for more details.
-+##  Lisensi
-+Internal System for HL Management.
+##  Lisensi
+Internal System for HL Management.
