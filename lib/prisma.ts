@@ -14,15 +14,14 @@ const libsqlClient = createClient({
   authToken: token,
 });
 
-// Trik sulap: Paksa tipe datanya lewat 'unknown' lalu ke tipe objek kosong yang aman dari kejaran ESLint
 const safeClient = libsqlClient as unknown as Record<string, unknown>;
-
 const adapter = new PrismaLibSql(safeClient as { url: string });
 
+// KUNCIAN UTAMA: Jika di production (Vercel), paksa pasang adapter tanpa banyak tanya!
 export const prisma =
   globalForPrisma.prisma ||
   new PrismaClient({
-    adapter: dbUrl.startsWith('libsql://') || dbUrl.startsWith('sqlite://') ? adapter : undefined,
+    adapter: process.env.NODE_ENV === 'production' ? adapter : undefined,
   });
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
