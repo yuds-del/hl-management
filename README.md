@@ -20,8 +20,6 @@ First, run the development server:
 
 Open http://localhost:3000 with your browser to see the result.
 ##  Stack Teknologi
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 **Frontend:** Next.js 15 (App Router), Tailwind CSS, Lucide React Icons.
 **Backend:** Next.js API Routes.
 **ORM & Database:** Prisma dengan SQLite/LibSQL (Serverless ready).
