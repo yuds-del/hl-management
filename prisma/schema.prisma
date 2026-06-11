@@ -1,0 +1,90 @@
+datasource db {
+  provider = "sqlite"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+
+// 1. Authentication: Single-user account (AC-1.2)
+model User {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  password  String   // Hashed password
+  createdAt DateTime @default(now())
+}
+
+// 2. Customer Management (AC-2)
+model Customer {
+  id             String             @id @default(cuid())
+  nama           String             // Required (AC-16)
+  accumulatedOmzet Float            @default(0)        // Total omzet Lunas untuk hitung bonus (AC-5.2)
+  bonusThreshold Float              @default(10000000) // Default 10jt IDR (AC-24)
+  isDeleted      Boolean            @default(false)    // Soft-delete flag (AC-18)
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+  
+  // Relations
+  discounts      CustomerDiscount[]
+  transactions   Transaction[]
+}
+
+// 3. Cascading Discounts per Customer (AC-2.4, AC-2.5)
+model CustomerDiscount {
+  id         String   @id @default(cuid())
+  customerId String
+  type       String   // "LM" or "BR" (AC-19)
+  steps      String   // Diskon bertingkat disimpan sebagai JSON string (e.g. "[20, 20, 10]") demi menjaga urutan array (AC-20, AC-21)
+  
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@unique([customerId, type]) // Satu customer hanya punya satu set diskon per tipe
+}
+
+// 4. Product Management (AC-3)
+model Product {
+  id               String            @id @default(cuid())
+  nama             String
+  hargaModal       Float             // Hanya untuk profit, bukan customer-facing (AC-34, AC-36)
+  hargaBase        Float             // List price sebelum diskon (AC-7, AC-35)
+  tipe             String            // Restricted to "LM" or "BR" (AC-32, AC-34)
+  isDeleted        Boolean           @default(false) // Soft-delete flag (AC-37)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  
+  transactionItems TransactionItem[]
+}
+
+// 5. Transaction / Bon Management (AC-4)
+model Transaction {
+  id               String            @id @default(cuid())
+  nomorBon         String            @unique // Required & Unique (AC-41, AC-49)
+  customerId       String
+  tanggal          DateTime          @default(now()) // Defaults to today, editable (AC-40, AC-48)
+  tanggalPelunasan DateTime?         // Diisi saat status diset Lunas (AC-109, AC-116)
+  ongkir           Float             @default(0)     // Pass-through (AC-44, AC-55, AC-67)
+  deskripsi        String?           // Free text (AC-45)
+  isBonus          Boolean           @default(false) // Bonus toggle (AC-46, AC-76)
+  status           String            @default("Piutang") // "Piutang" or "Lunas" (AC-47, AC-56)
+  createdAt        DateTime          @default(now())
+  
+  customer         Customer          @relation(fields: [customerId], references: [id])
+  items            TransactionItem[]
+}
+
+// 6. Product Line Items per Transaction (AC-4.3, AC-52)
+model TransactionItem {
+  id              String      @id @default(cuid())
+  transactionId   String
+  productId       String
+  quantity        Int         // Harus >= 1 (AC-52)
+  
+  // Snapshots harga untuk menjaga data historis laporan keuangan jika harga produk berubah di masa depan
+  priceSnap       Float       // Unit price setelah diskon bertingkat (AC-53, AC-62)
+  modalSnap       Float       // Harga modal saat transaksi dibuat (AC-66)
+
+  transaction     Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  product         Product     @relation(fields: [productId], references: [id])
+}
