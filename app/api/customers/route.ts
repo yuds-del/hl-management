@@ -1,11 +1,5 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-import { PrismaLibSql } from '@prisma/adapter-libsql';
-
-const adapter = new PrismaLibSql({
-  url: process.env.DATABASE_URL || 'file:./prisma/dev.db',
-});
-const prisma = new PrismaClient({ adapter });
+import { prisma } from '@/lib/prisma';
 
 // 1. GET: Ambil semua data pelanggan yang belum dihapus
 export async function GET() {

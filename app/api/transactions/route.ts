@@ -1,11 +1,5 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-import { PrismaLibSql } from '@prisma/adapter-libsql';
-
-const adapter = new PrismaLibSql({
-  url: process.env.DATABASE_URL || 'file:./prisma/dev.db',
-});
-const prisma = new PrismaClient({ adapter });
+import { prisma } from '@/lib/prisma';
 
 // Fungsi helper untuk menghitung harga setelah diskon bertingkat (Cascading)
 function calculateCascadingPrice(basePrice: number, stepsJson: string | undefined): number {
