@@ -37,7 +37,5 @@ export async function POST() {
       success: false,
       error: errorMsg
     }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
-  }
+  } 
 }

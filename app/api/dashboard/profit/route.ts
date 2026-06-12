@@ -1,11 +1,5 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-import { PrismaLibSql } from '@prisma/adapter-libsql';
-
-const adapter = new PrismaLibSql({
-  url: process.env.DATABASE_URL || 'file:./prisma/dev.db',
-});
-const prisma = new PrismaClient({ adapter });
+import { prisma } from '@/lib/prisma'; 
 
 export async function GET() {
   try {
@@ -26,7 +20,7 @@ export async function GET() {
 
     // Mapping data untuk detail per nota di tabel
     const reportDetails = transactions.map((tx) => {
-      let notaOmset = tx.ongkir; // Ongkir masuk ke komponen omset/nilai transaksi
+      let notaOmset = tx.ongkir; // Ongkir masuk ke komponen omset
       let notaModal = 0;
 
       tx.items.forEach((item) => {
@@ -65,7 +59,5 @@ export async function GET() {
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : 'Internal Server Error';
     return NextResponse.json({ success: false, message: errorMsg }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 }
